@@ -2,9 +2,9 @@
 
 ## Equipo de desarrollo
 
-- Alguien
-- Persona
-- etc.
+- Micaela Cisilino
+- Cynthia Abbate
+- Ariel Alejandro Guerra
 
 ## Capturas
 

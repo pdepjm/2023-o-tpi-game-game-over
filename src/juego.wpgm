@@ -1,8 +1,21 @@
 import wollok.game.*
-import pepita.*
+import example.*
 
 program juego {
-	game.title("Juego Base")
-	game.addVisual(pepita)
+	
+	game.width(14)
+	game.height(15)
+	//game.boardGround(fondo)
+	//game.title()
+	
+	keyboard.left().onPressDo( { personaje.moverseALaIzquierda() } )
+	keyboard.right().onPressDo( { personaje.moverseALaDerecha() } )
+	
+ 	game.onTick(400, "comida cayendo", { comidaGeneral.caer() })
+ 	// ver cómo hacer que caigan distintas comidas cada X tiempo
+	
+	game.addVisual(personaje)
+	game.addVisual(comidaGeneral)
+	
 	game.start()
 }
