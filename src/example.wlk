@@ -16,7 +16,7 @@ object personaje {
 
 // usar clases ?
 object comidaGeneral {
-	var property position = game.at(6,16)
+	var property position = game.at([0,2,4,6,8,10,12].anyOne(),16)
 	var comida = comidas.comidaAlAzar()
 	
 	method caer() {
