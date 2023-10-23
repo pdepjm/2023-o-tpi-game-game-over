@@ -1,5 +1,6 @@
 import wollok.game.*
-import example.*
+import gatito.*
+import comidas.*
 
 program juego {
 	
@@ -8,14 +9,16 @@ program juego {
 	//game.boardGround(fondo)
 	//game.title()
 	
-	keyboard.left().onPressDo( { personaje.moverseALaIzquierda() } )
-	keyboard.right().onPressDo( { personaje.moverseALaDerecha() } )
+	keyboard.left().onPressDo( { gatito.moverseALaIzquierda() } )
+	keyboard.right().onPressDo( { gatito.moverseALaDerecha() } )
 	
- 	game.onTick(400, "comida cayendo", { comidaGeneral.caer() })
+ 	game.onTick(400, "comida cayendo", { comida.caer() })
  	// ver cómo hacer que caigan distintas comidas cada X tiempo
+ 	
+ 	// game.onCollideDo(gatito,{unaComida => gatito.atraparComida(unaComida)})
 	
-	game.addVisual(personaje)
-	game.addVisual(comidaGeneral)
+	game.addVisual(gatito)
+	game.addVisual(comida)
 	
 	game.start()
 }
