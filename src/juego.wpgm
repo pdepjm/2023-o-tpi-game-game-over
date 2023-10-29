@@ -9,16 +9,17 @@ program juego {
 	//game.boardGround(fondo)
 	//game.title()
 	
+	game.addVisual(gatito)
+	
 	keyboard.left().onPressDo( { gatito.moverseALaIzquierda() } )
 	keyboard.right().onPressDo( { gatito.moverseALaDerecha() } )
 	
- 	game.onTick(400, "comida cayendo", { comida.caer() })
- 	// ver cómo hacer que caigan distintas comidas cada X tiempo
+ 	game.onTick(1000, "", { generador.generarUnaComida() })
  	
- 	// game.onCollideDo(gatito,{unaComida => gatito.atraparComida(unaComida)})
-	
-	game.addVisual(gatito)
-	game.addVisual(comida)
+ 	game.onCollideDo(gatito,{comidaAtrapada =>
+ 		//comidaAtrapada.generarEfecto()
+ 		generador.eliminarUnaComida(comidaAtrapada)
+ 	})
 	
 	game.start()
 }
