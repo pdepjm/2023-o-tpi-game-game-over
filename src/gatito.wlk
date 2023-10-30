@@ -2,11 +2,9 @@ import wollok.game.*
 import comidas.*
 
 object gatito {
-	var comidasAtrapadas = 0
-	var comidasEspeciales = 0
-	var comidasDaninas = 0
+	var vidas = 5
 	
-	var property position = game.at(5,2)
+	var property position = game.at(5,1)
 	const limiteIzquierdo = 0
 	const limiteDerecho = 10
 
@@ -22,21 +20,41 @@ object gatito {
 		}
 	}
 	
+	method checkearVidas() {
+		if(vidas == 10) {
+			self.ganar()
+		}
+		else if(vidas <= 0) {
+			self.perder()
+		}
+	}
+	
 	method comer() {
-		comidasAtrapadas++
-		/* si llega a 10 crece */
+		vidas++
+		self.checkearVidas()
 	}
 	
 	method comerComidaEspecial() {
-		comidasAtrapadas++
-		comidasEspeciales++
-		/* si llega a 5 gana */
+		vidas += 2
+		self.checkearVidas()
 	}
 	
 	method comerComidaDanina() {
-		comidasDaninas++
-		/* si llega a 3 pierde */
+		vidas -= 3
+		self.checkearVidas()
 	}
 	
-	method image() = "assets/gatito_prueba.png"
+	method ganar() {
+		game.removeTickEvent("Generar Comidas")
+		generador.eliminarTodasLasComidas()
+		//game.addVisual() /* imagen que diga que se ganó */
+	}
+	
+	method perder() {
+		game.removeTickEvent("Generar Comidas")
+		generador.eliminarTodasLasComidas()
+		//game.addVisual() /* imagen que diga que se perdió */
+	}
+	
+	method image() = "assets/gatito.png"
 }

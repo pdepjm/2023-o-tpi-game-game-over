@@ -16,7 +16,7 @@ class Comida {
 	}
 	
 	method caer() {
-		game.onTick(400,"", {self.caerUnaPosicion()})
+		game.onTick(500,"", {self.caerUnaPosicion()})
 	}
 	
 	method generarEfecto()
@@ -36,8 +36,8 @@ class ComidaGeneral inherits Comida {
 }
 
 class ComidaEspecial inherits Comida {
-	const comidasEspaciales = []
-	var imagenActual = comidasEspaciales.anyOne()
+	const comidasEspaciales = ["helado","sushi","whiskas"]
+	const imagenActual = comidasEspaciales.anyOne()
 	
 	override method generarEfecto() {
 		gatito.comerComidaEspecial()
@@ -47,15 +47,24 @@ class ComidaEspecial inherits Comida {
 }
 
 class ComidaDanina inherits Comida {
-	const comidasDaninas = ["manzana_podrida"]
+	const comidasDaninas = ["bomba","helado_enojado","manzana_podrida"]
 	const imagenActual = comidasDaninas.anyOne()
 	
 	override method generarEfecto() {
 		gatito.comerComidaDanina()
 	}
 	
+	override method caer() {
+		game.onTick(300,"", {self.caerUnaPosicion()})
+	}
+	
 	override method image() = "assets/" + imagenActual + ".png"
 }
+
+/*class ComidaGanadora inherits Comida {
+	
+	override method image() = "assets/whiskas.png"
+}*/
 
 object generador {
 	var nuevaComida
@@ -69,11 +78,17 @@ object generador {
 	}
 	
 	method comidaAlAzar() {
-		return [new ComidaGeneral(),new ComidaDanina()].anyOne()
+		return [new ComidaGeneral(),new ComidaEspecial(),new ComidaDanina()].anyOne()
 	}
 	
 	method eliminarUnaComida(comida) {
-		game.removeVisual(comida)
-		comidasEnPantalla.remove(comida)
+		if(game.hasVisual(comida)) {
+			game.removeVisual(comida)
+			comidasEnPantalla.remove(comida)
+		}
+	}
+	
+	method eliminarTodasLasComidas() {
+		comidasEnPantalla.forEach({comida => self.eliminarUnaComida(comida)})
 	}
 }
