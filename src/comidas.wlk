@@ -9,7 +9,6 @@ class Comida {
 	
 	method caerUnaPosicion() {
 		self.position(position.down(1))
-		/* checkear */
 		if(game.hasVisual(self) && position.y() == limiteInferior) {
 			generador.eliminarUnaComida(self)
 		}
@@ -19,7 +18,7 @@ class Comida {
 		game.onTick(500,"", {self.caerUnaPosicion()})
 	}
 	
-	method generarEfecto()
+	method generarEfecto(comidaAtrapada)
 	
 	method image()
 }
@@ -28,7 +27,7 @@ class ComidaGeneral inherits Comida {
 	const comidasGenerales = ["hamburguesa","papas","pizza","pollo","sandwich","sandwich2","taco"]
 	const imagenActual = comidasGenerales.anyOne()
 	
-	override method generarEfecto() {
+	override method generarEfecto(comidaAtrapada) {
 		gatito.comer()
 	}
 	
@@ -39,7 +38,7 @@ class ComidaEspecial inherits Comida {
 	const comidasEspaciales = ["helado","sushi","whiskas"]
 	const imagenActual = comidasEspaciales.anyOne()
 	
-	override method generarEfecto() {
+	override method generarEfecto(comidaAtrapada) {
 		gatito.comerComidaEspecial()
 	}
 	
@@ -47,37 +46,34 @@ class ComidaEspecial inherits Comida {
 }
 
 class ComidaDanina inherits Comida {
-	const comidasDaninas = ["bomba","helado_enojado","manzana_podrida"]
+	const comidasDaninas = ["bomba","helado_enojado","manzana_podrida","veneno"]
 	const imagenActual = comidasDaninas.anyOne()
 	
-	override method generarEfecto() {
-		gatito.comerComidaDanina()
+	method imagenActual() = imagenActual
+	
+	override method generarEfecto(comidaAtrapada) {
+		gatito.comerComidaDanina(comidaAtrapada)
 	}
 	
 	override method caer() {
-		game.onTick(300,"", {self.caerUnaPosicion()})
+		game.onTick(280,"", {self.caerUnaPosicion()})
 	}
 	
 	override method image() = "assets/" + imagenActual + ".png"
 }
-
-/*class ComidaGanadora inherits Comida {
-	
-	override method image() = "assets/whiskas.png"
-}*/
 
 object generador {
 	var nuevaComida
 	const comidasEnPantalla = []
 	
 	method generarUnaComida() {
-		nuevaComida = self.comidaAlAzar()
+		nuevaComida = self.generarComidaAlAzar()
 		comidasEnPantalla.add(nuevaComida)
 		game.addVisual(nuevaComida)
 		nuevaComida.caer()
 	}
 	
-	method comidaAlAzar() {
+	method generarComidaAlAzar() {
 		return [new ComidaGeneral(),new ComidaEspecial(),new ComidaDanina()].anyOne()
 	}
 	

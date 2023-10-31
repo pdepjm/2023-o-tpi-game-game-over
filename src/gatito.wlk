@@ -1,11 +1,12 @@
 import wollok.game.*
 import comidas.*
+import config_imagenes.*
 
 object gatito {
-	var vidas = 5
-	
-	var property position = game.at(5,1)
-	const limiteIzquierdo = 0
+	var vidas = 15
+
+	var property position = game.at(4,1)
+	const limiteIzquierdo = -2
 	const limiteDerecho = 10
 
 	method moverseALaIzquierda(){
@@ -19,9 +20,9 @@ object gatito {
 			self.position(position.right(1))
 		}
 	}
-	
-	method checkearVidas() {
-		if(vidas == 10) {
+
+	method cantidadDeVidas() {
+		if(vidas >= 40) {
 			self.ganar()
 		}
 		else if(vidas <= 0) {
@@ -31,29 +32,38 @@ object gatito {
 	
 	method comer() {
 		vidas++
-		self.checkearVidas()
+		self.cantidadDeVidas()
 	}
 	
 	method comerComidaEspecial() {
 		vidas += 2
-		self.checkearVidas()
+		self.cantidadDeVidas()
 	}
 	
-	method comerComidaDanina() {
-		vidas -= 3
-		self.checkearVidas()
+	method comerComidaDanina(comidaAtrapada) {
+		if (comidaAtrapada.imagenActual() == "bomba") {
+			self.perder()
+		}
+		else {
+			vidas -= 2
+			self.cantidadDeVidas()
+		}
 	}
 	
 	method ganar() {
-		game.removeTickEvent("Generar Comidas")
-		generador.eliminarTodasLasComidas()
-		//game.addVisual() /* imagen que diga que se ganó */
+		self.eliminarImagenes()
+		game.addVisual(imagenGanar)
 	}
 	
 	method perder() {
+		self.eliminarImagenes()
+		game.addVisual(imagenPerder)
+	}
+	
+	method eliminarImagenes() {
 		game.removeTickEvent("Generar Comidas")
 		generador.eliminarTodasLasComidas()
-		//game.addVisual() /* imagen que diga que se perdió */
+		game.removeVisual(self)
 	}
 	
 	method image() = "assets/gatito.png"
