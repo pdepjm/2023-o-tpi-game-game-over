@@ -18,6 +18,5 @@ object imagenPerder {
 
 object vidas {
 	var property position = game.at(0,13)
-	//method image() = "assets/vidasprueba.png"
 	method image() = "assets/" + gatito.stringVidas() + ".png"
 }

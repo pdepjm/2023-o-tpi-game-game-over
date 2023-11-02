@@ -3,7 +3,7 @@ import comidas.*
 import config_imagenes.*
 
 object gatito {
-	var vidas = 15
+	var vidas = 7
 
 	var property position = game.at(4,1)
 	const limiteIzquierdo = -2
@@ -42,6 +42,7 @@ object gatito {
 	
 	method comerComidaDanina(comidaAtrapada) {
 		if (comidaAtrapada.imagenActual() == "bomba") {
+			vidas = 0
 			self.perder()
 		}
 		else {
