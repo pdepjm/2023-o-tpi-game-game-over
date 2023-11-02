@@ -1,6 +1,12 @@
 import wollok.game.*
 import gatito.*
 
+object tablero {
+	method limiteIzquierdo() = -2
+	method limiteDerecho() = 10
+	method limiteInferior() = 0
+}
+
 object recuadro {
 	method position() = gatito.position().up(4).right(2)
 	method image() = "assets/recuadro_transparente.png"
@@ -16,7 +22,7 @@ object imagenPerder {
 	method image() = "assets/game_over.png"
 }
 
-object vidas {
+object imagenVidas {
 	var property position = game.at(0,13)
 	method image() = "assets/" + gatito.stringVidas() + ".png"
 }

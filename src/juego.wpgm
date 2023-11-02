@@ -1,7 +1,7 @@
 import wollok.game.*
 import gatito.*
 import comidas.*
-import config_imagenes.*
+import configuraciones.*
 
 program juego {
 	
@@ -12,7 +12,7 @@ program juego {
 	
 	game.addVisual(gatito)
 	game.addVisual(recuadro)
-	game.addVisual(vidas)
+	game.addVisual(imagenVidas)
 	
 	keyboard.left().onPressDo( { gatito.moverseALaIzquierda() } )
 	keyboard.right().onPressDo( { gatito.moverseALaDerecha() } )
@@ -20,7 +20,7 @@ program juego {
  	game.onTick(800, "Generar Comidas", { generador.generarUnaComida() })
  	
  	game.onCollideDo(recuadro,{comidaAtrapada =>
- 		comidaAtrapada.generarEfecto(comidaAtrapada)
+ 		comidaAtrapada.generarEfecto()
  		generador.eliminarUnaComida(comidaAtrapada)
  	})
 	

@@ -1,15 +1,15 @@
 import wollok.game.*
 import gatito.*
+import configuraciones.*
 
 class Comida {
 	// todas las posiciones de donde puede caer la comida
 	const posiblesX = [0,2,4,6,8,10,12]
 	var property position = game.at(posiblesX.anyOne(),16)
-	const limiteInferior = 0
 	
 	method caerUnaPosicion() {
 		self.position(position.down(1))
-		if(game.hasVisual(self) && position.y() == limiteInferior) {
+		if(game.hasVisual(self) && position.y() == tablero.limiteInferior()) {
 			generador.eliminarUnaComida(self)
 		}
 	}
@@ -18,7 +18,7 @@ class Comida {
 		game.onTick(500,"", {self.caerUnaPosicion()})
 	}
 	
-	method generarEfecto(comidaAtrapada)
+	method generarEfecto()
 	
 	method image()
 }
@@ -27,8 +27,8 @@ class ComidaGeneral inherits Comida {
 	const comidasGenerales = ["hamburguesa","papas","pizza","pollo","sandwich","sandwich2","taco"]
 	const imagenActual = comidasGenerales.anyOne()
 	
-	override method generarEfecto(comidaAtrapada) {
-		gatito.comer()
+	override method generarEfecto() {
+		gatito.modificarVidas(+1)
 	}
 	
 	override method image() = "assets/" + imagenActual + ".png"
@@ -38,21 +38,21 @@ class ComidaEspecial inherits Comida {
 	const comidasEspaciales = ["helado","sushi","whiskas"]
 	const imagenActual = comidasEspaciales.anyOne()
 	
-	override method generarEfecto(comidaAtrapada) {
-		gatito.comerComidaEspecial()
+	override method generarEfecto() {
+		gatito.modificarVidas(+2)
 	}
 	
 	override method image() = "assets/" + imagenActual + ".png"
 }
 
 class ComidaDanina inherits Comida {
-	const comidasDaninas = ["bomba","helado_enojado","manzana_podrida","veneno"]
+	const comidasDaninas = ["helado_enojado","manzana_podrida","veneno"]
 	const imagenActual = comidasDaninas.anyOne()
 	
 	method imagenActual() = imagenActual
 	
-	override method generarEfecto(comidaAtrapada) {
-		gatito.comerComidaDanina(comidaAtrapada)
+	override method generarEfecto() {
+		gatito.modificarVidas(-2)
 	}
 	
 	override method caer() {
@@ -60,6 +60,15 @@ class ComidaDanina inherits Comida {
 	}
 	
 	override method image() = "assets/" + imagenActual + ".png"
+}
+
+class Bomba inherits ComidaDanina {
+	
+	override method generarEfecto() {
+		gatito.modificarVidas(-(gatito.vidas()))
+	}
+	
+	override method image() = "assets/bomba.png"
 }
 
 object generador {
@@ -74,7 +83,7 @@ object generador {
 	}
 	
 	method generarComidaAlAzar() {
-		return [new ComidaGeneral(),new ComidaEspecial(),new ComidaDanina()].anyOne()
+		return [new ComidaGeneral(),new ComidaEspecial(),new ComidaDanina(),new Bomba()].anyOne()
 	}
 	
 	method eliminarUnaComida(comida) {

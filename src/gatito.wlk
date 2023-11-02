@@ -1,27 +1,30 @@
 import wollok.game.*
 import comidas.*
-import config_imagenes.*
+import configuraciones.*
 
 object gatito {
 	var vidas = 7
 
 	var property position = game.at(4,1)
-	const limiteIzquierdo = -2
-	const limiteDerecho = 10
 
 	method moverseALaIzquierda(){
-		if (position.x() > limiteIzquierdo) {
+		if (position.x() > tablero.limiteIzquierdo()) {
 			self.position(position.left(1))
 		}
 	}
 	
 	method moverseALaDerecha(){
-		if (position.x() < limiteDerecho) {
+		if (position.x() < tablero.limiteDerecho()) {
 			self.position(position.right(1))
 		}
 	}
+	
+	method modificarVidas(cantidad) {
+		vidas += cantidad
+		self.comprobarCantidadDeVidas()
+	}
 
-	method cantidadDeVidas() {
+	method comprobarCantidadDeVidas() {
 		if(vidas >= 40) {
 			self.ganar()
 		}
@@ -30,26 +33,9 @@ object gatito {
 		}
 	}
 	
-	method comer() {
-		vidas++
-		self.cantidadDeVidas()
-	}
+	method vidas() = vidas
 	
-	method comerComidaEspecial() {
-		vidas += 2
-		self.cantidadDeVidas()
-	}
-	
-	method comerComidaDanina(comidaAtrapada) {
-		if (comidaAtrapada.imagenActual() == "bomba") {
-			vidas = 0
-			self.perder()
-		}
-		else {
-			vidas -= 2
-			self.cantidadDeVidas()
-		}
-	}
+	method stringVidas() = vidas.toString()
 	
 	method ganar() {
 		self.eliminarImagenes()
@@ -60,8 +46,6 @@ object gatito {
 		self.eliminarImagenes()
 		game.addVisual(imagenPerder)
 	}
-	
-	method stringVidas() = vidas.toString()
 	
 	method eliminarImagenes() {
 		game.removeTickEvent("Generar Comidas")
