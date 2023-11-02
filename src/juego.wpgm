@@ -1,8 +1,29 @@
 import wollok.game.*
-import pepita.*
+import gatito.*
+import comidas.*
+import configuraciones.*
 
 program juego {
-	game.title("Juego Base")
-	game.addVisual(pepita)
+	
+	game.width(14)
+	game.height(15)
+	game.boardGround("assets/fondo.png")
+	game.title("Miau: Atrápame Si Puedes")
+	
+	game.addVisual(gatito)
+	game.addVisual(recuadro)
+	game.addVisual(imagenVidas)
+	
+	keyboard.left().onPressDo( { gatito.moverseALaIzquierda() } )
+	keyboard.right().onPressDo( { gatito.moverseALaDerecha() } )
+	
+ 	game.onTick(800, "Generar Comidas", { generador.generarUnaComida() })
+ 	
+ 	game.onCollideDo(recuadro,{comidaAtrapada =>
+ 		comidaAtrapada.generarEfecto()
+ 		generador.eliminarUnaComida(comidaAtrapada)
+ 	})
+	
 	game.start()
 }
+
