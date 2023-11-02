@@ -3,12 +3,6 @@ import gatito.*
 import comidas.*
 import config_imagenes.*
 
-/*
-COSAS QUE FALTAN:
-- editar todas las imágenes que faltan
-- instrucciones
- */
-
 program juego {
 	
 	game.width(14)
@@ -18,6 +12,7 @@ program juego {
 	
 	game.addVisual(gatito)
 	game.addVisual(recuadro)
+	game.addVisual(vidas)
 	
 	keyboard.left().onPressDo( { gatito.moverseALaIzquierda() } )
 	keyboard.right().onPressDo( { gatito.moverseALaDerecha() } )

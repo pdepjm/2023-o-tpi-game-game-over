@@ -7,11 +7,17 @@ object recuadro {
 }
 
 object imagenGanar {
-	var property position = game.at(3,5)
+	var property position = game.at(3,4)
 	method image() = "assets/you_win.png"
 }
 
 object imagenPerder {
-	var property position = game.at(3,5)
-	method image() = "assets/game_over1.png"
+	var property position = game.at(3,4)
+	method image() = "assets/game_over.png"
+}
+
+object vidas {
+	var property position = game.at(0,13)
+	//method image() = "assets/vidasprueba.png"
+	method image() = "assets/" + gatito.stringVidas() + ".png"
 }

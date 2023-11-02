@@ -60,6 +60,8 @@ object gatito {
 		game.addVisual(imagenPerder)
 	}
 	
+	method stringVidas() = vidas.toString()
+	
 	method eliminarImagenes() {
 		game.removeTickEvent("Generar Comidas")
 		generador.eliminarTodasLasComidas()
